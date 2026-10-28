@@ -79,9 +79,4 @@ public class SecurityConfiguration {
         return new ProviderManager(authenticationProvider);
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
-        return new JwtAuthenticationFilter(jwtService, userDetailsService);
-    }
-
 }
