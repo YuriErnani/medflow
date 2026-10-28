@@ -37,6 +37,7 @@ public class PacienteController {
     @PostMapping
     public ResponseEntity<Paciente> cadastrarPaciente(@RequestBody @Valid PacienteCadastroDTO dadosPaciente) {
         var pacienteCadastrado = service.cadastrarPaciente(dadosPaciente);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(pacienteCadastrado);
@@ -45,6 +46,7 @@ public class PacienteController {
     @PutMapping("/{id}")
     public ResponseEntity<PacienteAtualizadoDTO> atualizarPaciente(@PathVariable Long id, @RequestBody @Valid PacienteAtualizadoDTO dadosPaciente) {
         var pacienteAtualizado = service.atualizarPaciente(id, dadosPaciente);
+
         return ResponseEntity
                 .ok(pacienteAtualizado);
     }
@@ -52,6 +54,7 @@ public class PacienteController {
     @DeleteMapping("/desativar/{id}")
     public ResponseEntity<Void> deletarPaciente(@PathVariable Long id) {
         service.desativarPaciente(id);
+
         return ResponseEntity
                 .noContent()
                 .build();
@@ -60,6 +63,7 @@ public class PacienteController {
     @PatchMapping("/ativar/{id}")
     public ResponseEntity<Void> ativarPaciente(@PathVariable Long id) {
         service.ativarPaciente(id);
+
         return ResponseEntity
                 .noContent()
                 .build();

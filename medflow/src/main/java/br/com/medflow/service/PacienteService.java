@@ -34,7 +34,8 @@ public class PacienteService {
     public Paciente cadastrarPaciente(PacienteCadastroDTO dadosPaciente) {
         var paciente = new Paciente(dadosPaciente);
 
-        if (repository.existsByEmail(dadosPaciente.email())) throw new EmailJaCadastradoException(dadosPaciente.email());
+        if (repository.existsByEmail(dadosPaciente.email()))
+            throw new EmailJaCadastradoException(dadosPaciente.email());
 
         return repository.save(paciente);
     }
@@ -44,7 +45,8 @@ public class PacienteService {
         var paciente = repository.findById(id)
                 .orElseThrow(() -> new PacienteNaoEncontradoException(id));
 
-        if (!paciente.getAtivo()) throw new EstadoPacienteInvalidoException("Não é possível atualizar um paciente inativo");
+        if (!paciente.getAtivo())
+            throw new EstadoPacienteInvalidoException("Não é possível atualizar um paciente inativo");
 
         paciente.setNome(dadosPaciente.nome());
         paciente.setEmail(dadosPaciente.email());
@@ -59,7 +61,8 @@ public class PacienteService {
         var paciente = repository.findById(id)
                 .orElseThrow(() -> new PacienteNaoEncontradoException(id));
 
-        if (!paciente.getAtivo()) throw new EstadoPacienteInvalidoException("O paciente já está inativo");
+        if (!paciente.getAtivo())
+            throw new EstadoPacienteInvalidoException("O paciente já está inativo");
 
         paciente.setAtivo(false);
     }
@@ -69,7 +72,8 @@ public class PacienteService {
         var paciente = repository.findById(id)
                 .orElseThrow(() -> new PacienteNaoEncontradoException(id));
 
-        if (paciente.getAtivo()) throw new EstadoPacienteInvalidoException("O paciente já está ativo");
+        if (paciente.getAtivo())
+            throw new EstadoPacienteInvalidoException("O paciente já está ativo");
 
         paciente.setAtivo(true);
     }

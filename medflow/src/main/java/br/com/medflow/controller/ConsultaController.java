@@ -48,6 +48,7 @@ public class ConsultaController {
     @PatchMapping("/cancelar/{id}")
     public ResponseEntity<Void> cancelarConsulta(@PathVariable Long id) {
         service.cancelarConsulta(id);
+
         return ResponseEntity
                 .noContent()
                 .build();
@@ -56,6 +57,7 @@ public class ConsultaController {
     @PatchMapping("/realizar/{id}")
     public ResponseEntity<Void> marcarConsultaComoRealizada(@PathVariable Long id) {
         service.marcarConsultaComoRealizada(id);
+
         return ResponseEntity
                 .noContent()
                 .build();

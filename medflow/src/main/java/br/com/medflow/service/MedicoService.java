@@ -34,11 +34,14 @@ public class MedicoService {
 
     @Transactional
     public MedicoRespostaDTO cadastrarMedico(MedicoCadastroDTO dadosMedico) {
-        if (repository.existsByEmail(dadosMedico.email())) throw new EmailJaCadastradoException(dadosMedico.email());
+        if (repository.existsByEmail(dadosMedico.email()))
+            throw new EmailJaCadastradoException(dadosMedico.email());
 
-        if (repository.existsByCrm(dadosMedico.crm())) throw new CrmJaCadastradoException(dadosMedico.crm());
+        if (repository.existsByCrm(dadosMedico.crm()))
+            throw new CrmJaCadastradoException(dadosMedico.crm());
 
         var medico = new Medico(dadosMedico);
+
         var medicoSalvo = repository.save(medico);
 
         return new MedicoRespostaDTO(medicoSalvo);
@@ -49,11 +52,14 @@ public class MedicoService {
         var medico = repository.findById(id)
                 .orElseThrow(() -> new MedicoNaoEncontradoException(id));
 
-        if (!medico.getAtivo()) throw new EstadoMedicoInvalidoException("Não é possível atualizar um médico inativo");
+        if (!medico.getAtivo())
+            throw new EstadoMedicoInvalidoException("Não é possível atualizar um médico inativo");
 
-        if (!medico.getEmail().equals(dadosMedico.email()) && repository.existsByEmail(dadosMedico.email())) throw new EmailJaCadastradoException(dadosMedico.email());
+        if (!medico.getEmail().equals(dadosMedico.email()) && repository.existsByEmail(dadosMedico.email()))
+            throw new EmailJaCadastradoException(dadosMedico.email());
 
-        if (!medico.getCrm().equals(dadosMedico.crm()) && repository.existsByCrm(dadosMedico.crm())) throw new CrmJaCadastradoException(dadosMedico.crm());
+        if (!medico.getCrm().equals(dadosMedico.crm()) && repository.existsByCrm(dadosMedico.crm()))
+            throw new CrmJaCadastradoException(dadosMedico.crm());
 
         medico.setNome(dadosMedico.nome());
         medico.setEmail(dadosMedico.email());
@@ -70,7 +76,8 @@ public class MedicoService {
         var medico = repository.findById(id)
                 .orElseThrow(() -> new MedicoNaoEncontradoException(id));
 
-        if (!medico.getAtivo()) throw new EstadoMedicoInvalidoException("O médico já está inativo");
+        if (!medico.getAtivo())
+            throw new EstadoMedicoInvalidoException("O médico já está inativo");
 
         medico.setAtivo(false);
     }
@@ -80,7 +87,8 @@ public class MedicoService {
         var medico = repository.findById(id)
                 .orElseThrow(() -> new MedicoNaoEncontradoException(id));
 
-        if (medico.getAtivo()) throw new EstadoMedicoInvalidoException("O médico já está ativo");
+        if (medico.getAtivo())
+            throw new EstadoMedicoInvalidoException("O médico já está ativo");
 
         medico.setAtivo(true);
     }

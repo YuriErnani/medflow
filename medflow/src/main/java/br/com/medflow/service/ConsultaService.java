@@ -35,22 +35,31 @@ public class ConsultaService {
         var medico = medicoRepository.findById(medicoId)
                 .orElseThrow(() -> new MedicoNaoEncontradoException(medicoId));
 
-        if (!paciente.getAtivo()) throw new HorarioConsultaIndisponivelException("Não é possível agendar uma consulta para um paciente inativo");
+        if (!paciente.getAtivo())
+            throw new HorarioConsultaIndisponivelException("Não é possível agendar uma consulta para um paciente inativo");
 
-        if (!medico.getAtivo()) throw new HorarioConsultaIndisponivelException("Não é possível agendar uma consulta com um médico inativo");
+        if (!medico.getAtivo())
+            throw new HorarioConsultaIndisponivelException("Não é possível agendar uma consulta com um médico inativo");
 
-        if (dataHoraInicio == null || !dataHoraInicio.isAfter(LocalDateTime.now())) throw new DataConsultaInvalidaException("A data e hora da consulta devem estar no futuro");
+        if (dataHoraInicio == null || !dataHoraInicio.isAfter(LocalDateTime.now()))
+            throw new DataConsultaInvalidaException("A data e hora da consulta devem estar no futuro");
 
         var inicioMenor = dataHoraInicio.minusMinutes(30);
+
         var fim = dataHoraInicio.plusMinutes(30);
 
         boolean conflitoMedico = consultaRepository.existeConflitoMedico(medicoId, inicioMenor, fim, StatusConsulta.CANCELADA);
-        if (conflitoMedico) throw new HorarioConsultaIndisponivelException("O médico já possui uma consulta nesse intervalo");
+
+        if (conflitoMedico)
+            throw new HorarioConsultaIndisponivelException("O médico já possui uma consulta nesse intervalo");
 
         boolean conflitoPaciente = consultaRepository.existeConflitoPaciente(pacienteId, inicioMenor, fim, StatusConsulta.CANCELADA);
-        if (conflitoPaciente) throw new HorarioConsultaIndisponivelException("O paciente já possui uma consulta nesse intervalo");
+
+        if (conflitoPaciente)
+            throw new HorarioConsultaIndisponivelException("O paciente já possui uma consulta nesse intervalo");
 
         var consulta = new Consulta(paciente, medico, dataHoraInicio);
+
         var consultaSalva = consultaRepository.save(consulta);
 
         return new ConsultaRespostaDTO(consultaSalva);
@@ -66,6 +75,7 @@ public class ConsultaService {
     public ConsultaRespostaDTO buscarConsultaPorId(Long id) {
         var consulta = consultaRepository.findById(id)
                 .orElseThrow(() -> new ConsultaNaoEncontradaException(id));
+
         return new ConsultaRespostaDTO(consulta);
     }
 
@@ -74,7 +84,8 @@ public class ConsultaService {
         var consulta = consultaRepository.findById(id)
                 .orElseThrow(() -> new ConsultaNaoEncontradaException(id));
 
-        if (consulta.getStatus() != StatusConsulta.AGENDADA)  throw new EstadoConsultaInvalidoException("Somente consultas agendadas podem ser canceladas");
+        if (consulta.getStatus() != StatusConsulta.AGENDADA)
+            throw new EstadoConsultaInvalidoException("Somente consultas agendadas podem ser canceladas");
 
         consulta.marcarComoCancelada();
     }
@@ -84,7 +95,8 @@ public class ConsultaService {
         var consulta = consultaRepository.findById(id)
                 .orElseThrow(() -> new ConsultaNaoEncontradaException(id));
 
-        if (consulta.getStatus() != StatusConsulta.AGENDADA) throw new EstadoConsultaInvalidoException("Somente consultas agendadas podem ser marcadas como realizadas");
+        if (consulta.getStatus() != StatusConsulta.AGENDADA)
+            throw new EstadoConsultaInvalidoException("Somente consultas agendadas podem ser marcadas como realizadas");
 
         consulta.marcarComoRealizada();
     }
