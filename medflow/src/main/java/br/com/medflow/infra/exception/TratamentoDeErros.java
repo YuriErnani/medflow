@@ -9,11 +9,21 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class TratamentoDeErros {
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErroRespostaDTO> tratarFalhaLogin(AuthenticationException exception, HttpServletRequest request) {
+        var erro = new ErroRespostaDTO(401, "Não autorizado", "E-mail ou senha inválidos", request.getRequestURI(), LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(erro);
+    }
 
     @ExceptionHandler(PacienteNaoEncontradoException.class)
     public ResponseEntity<ErroRespostaDTO> tratarPacienteNaoEncontrado(PacienteNaoEncontradoException exception, HttpServletRequest request) {

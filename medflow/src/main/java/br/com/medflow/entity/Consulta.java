@@ -41,7 +41,7 @@ public class Consulta {
         return dataHoraInicio.plusMinutes(30);
     }
 
-    public void cancelar() {
+    public void marcarComoCancelada() {
         this.status = StatusConsulta.CANCELADA;
     }
 

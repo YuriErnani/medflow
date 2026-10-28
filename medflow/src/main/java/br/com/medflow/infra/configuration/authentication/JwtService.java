@@ -1,4 +1,4 @@
-package br.com.medflow.infra.configuration;
+package br.com.medflow.infra.configuration.authentication;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -35,10 +35,6 @@ public class JwtService {
                 .compact();
     }
 
-    public String extrairEmail(String token) {
-        return extrairClaims(token).getSubject();
-    }
-
     public boolean tokenValido(String token) {
         try {
             extrairClaims(token);
@@ -46,6 +42,10 @@ public class JwtService {
         } catch (io.jsonwebtoken.JwtException | IllegalArgumentException exception) {
             return false;
         }
+    }
+
+    public String extrairEmail(String token) {
+        return extrairClaims(token).getSubject();
     }
 
     private Claims extrairClaims(String token) {

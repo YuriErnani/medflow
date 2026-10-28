@@ -76,7 +76,7 @@ public class ConsultaService {
 
         if (consulta.getStatus() != StatusConsulta.AGENDADA)  throw new EstadoConsultaInvalidoException("Somente consultas agendadas podem ser canceladas");
 
-        consulta.cancelar();
+        consulta.marcarComoCancelada();
     }
 
     @Transactional

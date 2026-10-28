@@ -1,4 +1,4 @@
-package br.com.medflow.infra.configuration;
+package br.com.medflow.infra.configuration.authentication;
 
 import br.com.medflow.dto.erroDTO.ErroRespostaDTO;
 import tools.jackson.databind.ObjectMapper;
@@ -23,7 +23,6 @@ public class AutenticacaoEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-
         var erro = new ErroRespostaDTO(
                 HttpServletResponse.SC_UNAUTHORIZED,
                 "Não autorizado",

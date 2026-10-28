@@ -1,4 +1,4 @@
-package br.com.medflow.service;
+package br.com.medflow.infra.configuration;
 
 import br.com.medflow.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.User;
