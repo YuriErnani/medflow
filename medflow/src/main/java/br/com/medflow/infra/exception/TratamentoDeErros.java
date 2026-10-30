@@ -221,4 +221,21 @@ public class TratamentoDeErros {
                 .body(erro);
     }
 
+    @ExceptionHandler(LoginGitHubNaoAutorizadoException.class)
+    public ResponseEntity<ErroRespostaDTO> tratarLoginGitHubNaoAutorizado(LoginGitHubNaoAutorizadoException exception, HttpServletRequest request) {
+        var status = HttpStatus.UNAUTHORIZED;
+
+        var erro = new ErroRespostaDTO(
+                status.value(),
+                "Não autorizado",
+                exception.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(status)
+                .body(erro);
+    }
+
 }
