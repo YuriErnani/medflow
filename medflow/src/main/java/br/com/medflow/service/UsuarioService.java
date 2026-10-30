@@ -22,6 +22,7 @@ public class UsuarioService {
     @Transactional
     public UsuarioRespostaDTO cadastrarUsuario(UsuarioCadastroDTO dados) {
         var usuario = new Usuario(dados.email(), passwordEncoder.encode(dados.senha()), dados.perfil());
+
         var usuarioSalvo = repository.save(usuario);
 
         return new UsuarioRespostaDTO(usuarioSalvo);

@@ -3,18 +3,17 @@ package br.com.medflow.service;
 import br.com.medflow.dto.authDTO.LoginDTO;
 import br.com.medflow.dto.authDTO.LoginRespostaDTO;
 import br.com.medflow.infra.configuration.authentication.JwtService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthService {
+public class LoginService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public AuthService(AuthenticationManager authenticationManager, JwtService jwtService) {
+    public LoginService(AuthenticationManager authenticationManager, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
     }
@@ -24,7 +23,7 @@ public class AuthService {
 
         authenticationManager.authenticate(credenciais);
 
-        var token = jwtService.gerarToken(dados.email());
+        var token = jwtService.gerarTokenJWT(dados.email());
 
         return new LoginRespostaDTO("Login realizado com sucesso", token, "Bearer");
     }

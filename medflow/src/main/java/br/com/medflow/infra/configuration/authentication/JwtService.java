@@ -22,7 +22,7 @@ public class JwtService {
         this.chave = Keys.hmacShaKeyFor(segredo.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String gerarToken(String email) {
+    public String gerarTokenJWT(String email) {
         var agora = Instant.now();
         var expiracao = agora.plus(duracaoMinutos, ChronoUnit.MINUTES);
 

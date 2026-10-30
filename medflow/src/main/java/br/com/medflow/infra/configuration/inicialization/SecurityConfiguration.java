@@ -1,8 +1,7 @@
-package br.com.medflow.infra.configuration;
+package br.com.medflow.infra.configuration.inicialization;
 
 import br.com.medflow.infra.configuration.authentication.AutenticacaoEntryPoint;
 import br.com.medflow.infra.configuration.authentication.JwtAuthenticationFilter;
-import br.com.medflow.infra.configuration.authentication.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -74,7 +73,6 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         var authenticationProvider = new DaoAuthenticationProvider(userDetailsService);
-
         authenticationProvider.setPasswordEncoder(passwordEncoder);
 
         return new ProviderManager(authenticationProvider);

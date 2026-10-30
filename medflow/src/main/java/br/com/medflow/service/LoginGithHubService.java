@@ -51,9 +51,31 @@ public class LoginGithHubService {
         if (!Boolean.TRUE.equals(usuario.getAtivo()))
             throw new LoginGitHubNaoAutorizadoException();
 
-        var token = jwtService.gerarToken(usuario.getEmail());
+        var token = jwtService.gerarTokenJWT(usuario.getEmail());
 
         return new LoginRespostaDTO("Login realizado com sucesso", token, "Bearer");
+    }
+
+    public String obterEmail(String code) {
+        var token = obterToken(code);
+
+        var headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        var resposta = restClient
+                .get()
+                .uri("https://api.github.com/user/emails")
+                .headers(httpHeaders -> httpHeaders.addAll(headers))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .body(DadosEmailGitHubDTO[].class);
+
+        for (DadosEmailGitHubDTO dados : resposta) {
+            if(dados.primary() && dados.verified())
+                return dados.email();
+        }
+
+        return null;
     }
 
     private String obterToken(String code) {
@@ -72,32 +94,10 @@ public class LoginGithHubService {
 
         var accessToken = resposta.get("access_token");
 
-        if (accessToken == null) throw new LoginGitHubNaoAutorizadoException();
+        if (accessToken == null)
+            throw new LoginGitHubNaoAutorizadoException();
 
         return accessToken.toString();
-    }
-
-    public String obterEmail(String code) {
-        var token = obterToken(code);
-
-        var headers = new HttpHeaders();
-
-        headers.setBearerAuth(token);
-
-        var resposta = restClient
-                .get()
-                .uri("https://api.github.com/user/emails")
-                .headers(httpHeaders -> httpHeaders.addAll(headers))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .body(DadosEmailGitHubDTO[].class);
-
-        for (DadosEmailGitHubDTO dados : resposta) {
-            if(dados.primary() && dados.verified())
-                return dados.email();
-        }
-
-        return null;
     }
 
 }
